@@ -1,3 +1,4 @@
+from typing import Union, Optional
 from model.explorer import Explorer
 
 # фиктивные данные, в главе 10 они будут заменены на реальную базу данных и SQL
@@ -12,7 +13,7 @@ def get_all() -> list[Explorer]:
     return _explorers
 
 
-def get_one(name: str) -> Explorer | None:
+def get_one(name: str) -> Optional[Explorer]:
     for _explorer in _explorers:
         if _explorer.name == name:
             return _explorer

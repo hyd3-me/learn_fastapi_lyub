@@ -1,3 +1,4 @@
+from typing import Union, Optional
 from model.creature import Creature
 
 # фиктивные данные, пока не произойдет замена на реальную базу данных и SQL
@@ -24,7 +25,7 @@ def get_all() -> list[Creature]:
     return _creatures
 
 
-def get_one(name: str) -> Creature | None:
+def get_one(name: str) -> Optional[Creature]:
     """Возврат одного существа"""
     for _creature in _creatures:
         if _creature.name == name:
