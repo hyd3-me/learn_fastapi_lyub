@@ -28,7 +28,7 @@ def get_all() -> list[Creature]:
 def get_one(name: str) -> Optional[Creature]:
     """Возврат одного существа"""
     for _creature in _creatures:
-        if _creature.name == name:
+        if _creature.name.lower() == name:
             return _creature
     return None
 
