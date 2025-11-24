@@ -1,5 +1,6 @@
 from .init import conn, curs
 from model.creature import Creature
+from typing import Optional
 
 curs.execute(
     """create table if not exists creature(
@@ -12,15 +13,19 @@ aka text)"""
 
 
 def row_to_model(row: tuple) -> Creature:
+    if row is None:
+        return None
     name, description, country, area, aka = row
-    return Creature(name, description, country, area, aka)
+    return Creature(
+        name=name, description=description, country=country, area=area, aka=aka
+    )
 
 
 def model_to_dict(creature: Creature) -> dict:
-    return creature.dict()
+    return creature.model_dump()
 
 
-def get_one(name: str) -> Creature:
+def get_one(name: str) -> Optional[Creature]:
     qry = "select * from creature where name=:name"
     params = {"name": name}
     curs.execute(qry, params)
@@ -28,7 +33,7 @@ def get_one(name: str) -> Creature:
     return row_to_model(row)
 
 
-def get_all(name: str) -> list[Creature]:
+def get_all() -> list[Creature]:
     qry = "select * from creature"
     curs.execute(qry)
     rows = list(curs.fetchall())
@@ -40,6 +45,7 @@ def create(creature: Creature):
     (:name, :description, :country, :area, :aka)"""
     params = model_to_dict(creature)
     curs.execute(qry, params)
+    return get_one(creature.name)
 
 
 def modify(creature: Creature):

@@ -3,9 +3,9 @@ from service import creature as code
 
 sample = Creature(
     name="Yeti",
+    description="Hirsute Himalayan",
     country="CN",
     area="Himalayas",
-    description="Hirsute Himalayan",
     aka="Abominable Snowman",
 )
 
@@ -16,7 +16,7 @@ def test_create():
 
 
 def test_get_exists():
-    resp = code.get_one("yeti")
+    resp = code.get_one("Yeti")
     assert resp == sample
 
 

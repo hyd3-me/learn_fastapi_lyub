@@ -2,8 +2,6 @@ from typing import Union, Optional
 from model.explorer import Explorer
 import data.explorer as data
 
-# import fake.explorer as data
-
 
 def get_all() -> list[Explorer]:
     return data.get_all()
