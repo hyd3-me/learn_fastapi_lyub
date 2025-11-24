@@ -1,6 +1,8 @@
 from typing import Union, Optional
 from model.creature import Creature
-import fake.creature as data
+
+# import fake.creature as data
+import data.creature as data
 
 
 def get_all() -> list[Creature]:

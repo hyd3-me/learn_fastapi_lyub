@@ -1,3 +1,4 @@
+from typing import Union, Optional
 from .init import curs
 from model.explorer import Explorer
 
@@ -10,6 +11,8 @@ description text)"""
 
 
 def row_to_model(row: tuple) -> Explorer:
+    if row is None:
+        raise ValueError("Cannot convert None to Explorer model")
     return Explorer(name=row[0], country=row[1], description=row[2])
 
 
@@ -17,11 +20,14 @@ def model_to_dict(explorer: Explorer) -> dict:
     return explorer.dict() if explorer else None
 
 
-def get_one(name: str) -> Explorer:
+def get_one(name: str) -> Optional[Explorer]:
     qry = "select * from explorer where name=:name"
     params = {"name": name}
     curs.execute(qry, params)
-    return row_to_model(curs.fetchone())
+    row = curs.fetchone()
+    if row is None:
+        return None
+    return row_to_model(row)
 
 
 def get_all() -> list[Explorer]:
