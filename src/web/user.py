@@ -45,7 +45,7 @@ async def create_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@app.get("/token")
+@router.get("/token")
 def get_access_token(token: str = Depends(oauth2_dep)) -> dict:
     """Возврат текущего токена доступа"""
     return {"token": token}
