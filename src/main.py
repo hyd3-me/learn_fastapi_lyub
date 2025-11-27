@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from fastapi.staticfiles import StaticFiles
 from web import explorer, creature, user
 from fastapi import File, UploadFile
@@ -26,6 +26,11 @@ def top():
 @app.get("/echo/{thing}")
 def echo(thing):
     return f"echoing {thing}"
+
+
+@app.get("/who2")
+def greet2(name: str = Form()):
+    return f"Hello, {name}?"
 
 
 @app.post("/small")
