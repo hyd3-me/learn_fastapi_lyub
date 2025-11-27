@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from web import explorer, creature, user
 from fastapi import File, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.templating import Jinja2Templates
 from pathlib import Path
 from typing import Generator
 
@@ -15,6 +16,7 @@ app.include_router(user.router)
 
 # Каталог, содержащий файл main.py:
 top = Path(__file__).resolve().parent
+template_obj = Jinja2Templates(directory=f"{top}/template")
 app.mount("/static", StaticFiles(directory=f"{top}/static", html=True), name="free")
 
 
@@ -61,6 +63,19 @@ async def download_big_file(name: str):
         status_code=200,
     )
     return response
+
+
+# Получение нескольких небольших предопределенных списков наших приятелей:
+from fake.creature import _creatures as fake_creatures
+from fake.explorer import _explorers as fake_explorers
+
+
+@app.get("/list")
+def explorer_list(request: Request):
+    return template_obj.TemplateResponse(
+        "list.html",
+        {"request": request, "explorers": fake_explorers, "creatures": fake_creatures},
+    )
 
 
 if __name__ == "__main__":
