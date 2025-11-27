@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from web import explorer, creature, user
 from fastapi import File, UploadFile
+from fastapi.responses import FileResponse
 
 
 app = FastAPI()
@@ -28,6 +29,11 @@ async def upload_small_file(small_file: bytes = File()) -> str:
 @app.post("/big")
 async def upload_big_file(big_file: UploadFile) -> str:
     return f"file size: {big_file.size}, name: {big_file.filename}"
+
+
+@app.get("/small/{name}")
+async def download_small_file(name):
+    return FileResponse(name)
 
 
 if __name__ == "__main__":
