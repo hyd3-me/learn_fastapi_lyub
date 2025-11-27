@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from web import explorer, creature, user
 from fastapi import File, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
+from pathlib import Path
+from typing import Generator
 
 
 app = FastAPI()
@@ -34,6 +36,21 @@ async def upload_big_file(big_file: UploadFile) -> str:
 @app.get("/small/{name}")
 async def download_small_file(name):
     return FileResponse(name)
+
+
+def gen_file(path: str) -> Generator:
+    with open(file=path, mode="rb") as file:
+        yield file.read()
+
+
+@app.get("/big/{name}")
+async def download_big_file(name: str):
+    gen_expr = gen_file(path=name)
+    response = StreamingResponse(
+        content=gen_expr,
+        status_code=200,
+    )
+    return response
 
 
 if __name__ == "__main__":
