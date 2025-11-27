@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from web import explorer, creature, user
-from fastapi import File
+from fastapi import File, UploadFile
 
 
 app = FastAPI()
@@ -23,6 +23,11 @@ def echo(thing):
 @app.post("/small")
 async def upload_small_file(small_file: bytes = File()) -> str:
     return f"file size: {len(small_file)}"
+
+
+@app.post("/big")
+async def upload_big_file(big_file: UploadFile) -> str:
+    return f"file size: {big_file.size}, name: {big_file.filename}"
 
 
 if __name__ == "__main__":
