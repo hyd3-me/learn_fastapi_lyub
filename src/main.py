@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from web import explorer, creature, user
 from fastapi import File, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
@@ -11,6 +12,10 @@ app = FastAPI()
 app.include_router(explorer.router)
 app.include_router(creature.router)
 app.include_router(user.router)
+
+# Каталог, содержащий файл main.py:
+top = Path(__file__).resolve().parent
+app.mount("/static", StaticFiles(directory=f"{top}/static", html=True), name="free")
 
 
 @app.get("/")
